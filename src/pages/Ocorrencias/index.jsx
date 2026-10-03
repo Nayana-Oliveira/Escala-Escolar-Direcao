@@ -78,33 +78,37 @@ export default function Ocorrencias() {
       if (atividadesRes.error) throw atividadesRes.error;
       if (locaisRes.error) throw locaisRes.error;
 
-      const funcionarios = funcionariosRes.data || [];
+      const funcionariosDados = funcionariosRes.data || [];
       const escalas = escalasRes.data || [];
-      const atividades = atividadesRes.data || [];
-      const locais = locaisRes.data || [];
-      const ocorrencias = Array.isArray(ocorrenciasRes) ? ocorrenciasRes : [];
+      const atividadesDados = atividadesRes.data || [];
+      const locaisDados = locaisRes.data || [];
+      const ocorrenciasDados = Array.isArray(ocorrenciasRes)
+        ? ocorrenciasRes
+        : [];
 
-      console.log("Ocorrências recebidas:", ocorrencias);
+      const atividadesComFuncionario = atividadesDados.map((atividade) => {
+        const escala = escalas.find(
+          (item) => String(item.id) === String(atividade.escala_id),
+        );
 
-      const atividadesComFuncionario = atividades.map((atividade) => {
-        const escala = escalas.find((item) => item.id === atividade.escala_id);
-
-        const local = locais.find((item) => item.id === atividade.local_id);
+        const local = locaisDados.find(
+          (item) => String(item.id) === String(atividade.local_id),
+        );
 
         return {
           ...atividade,
-          funcionario_id: escala?.funcionario_id || null,
+          funcionario_id: escala?.funcionario_id ?? null,
           local_nome: local?.nome || "Local não informado",
         };
       });
 
-      const ocorrenciasComDados = ocorrencias.map((ocorrencia) => {
-        const funcionario = funcionarios.find(
-          (item) => item.id === ocorrencia.funcionario_id,
+      const ocorrenciasComDados = ocorrenciasDados.map((ocorrencia) => {
+        const funcionario = funcionariosDados.find(
+          (item) => String(item.id) === String(ocorrencia.funcionario_id),
         );
 
         const atividade = atividadesComFuncionario.find(
-          (item) => item.id === ocorrencia.atividade_id,
+          (item) => String(item.id) === String(ocorrencia.atividade_id),
         );
 
         return {
@@ -117,11 +121,17 @@ export default function Ocorrencias() {
         };
       });
 
-      setFuncionarios(funcionarios);
+      setFuncionarios(funcionariosDados);
+      setAtividades(atividadesComFuncionario);
+      setLocais(locaisDados);
       setOcorrencias(ocorrenciasComDados);
+
+      console.log("Atividades carregadas:", atividadesComFuncionario);
+      console.log("Locais carregados:", locaisDados);
     } catch (erro) {
       console.error("Erro ao carregar dados:", erro);
-      alert("Não foi possível carregar os dados das ocorrências.");
+      setErro("Não foi possível carregar os dados das ocorrências.");
+      toast.error("Não foi possível carregar os dados das ocorrências.");
     } finally {
       setCarregando(false);
     }
@@ -131,7 +141,8 @@ export default function Ocorrencias() {
     if (!funcionarioSelecionado) return [];
 
     return atividades.filter(
-      (atividade) => atividade.funcionario_id === funcionarioSelecionado,
+      (atividade) =>
+        String(atividade.funcionario_id) === String(funcionarioSelecionado),
     );
   }, [atividades, funcionarioSelecionado]);
 
@@ -140,14 +151,16 @@ export default function Ocorrencias() {
 
     return ocorrencias.filter((ocorrencia) => {
       const funcionario = funcionarios.find(
-        (item) => item.id === ocorrencia.funcionario_id,
+        (item) => String(item.id) === String(ocorrencia.funcionario_id),
       );
 
       const atividade = atividades.find(
-        (item) => item.id === ocorrencia.atividade_id,
+        (item) => String(item.id) === String(ocorrencia.atividade_id),
       );
 
-      const local = locais.find((item) => item.id === atividade?.local_id);
+      const local = locais.find(
+        (item) => String(item.id) === String(atividade?.local_id),
+      );
 
       const textoAtividade = [local?.nome, atividade?.descricao]
         .filter(Boolean)
@@ -156,12 +169,13 @@ export default function Ocorrencias() {
 
       const correspondeBusca =
         !termo ||
-        funcionario?.nome.toLowerCase().includes(termo) ||
+        funcionario?.nome?.toLowerCase().includes(termo) ||
         textoAtividade.includes(termo) ||
         (ocorrencia.descricao || "").toLowerCase().includes(termo);
 
       const correspondeFuncionario =
-        !filtroFuncionario || ocorrencia.funcionario_id === filtroFuncionario;
+        !filtroFuncionario ||
+        String(ocorrencia.funcionario_id) === String(filtroFuncionario);
 
       const correspondeData = !filtroData || ocorrencia.data === filtroData;
 
@@ -259,15 +273,20 @@ export default function Ocorrencias() {
   }
 
   function obterFuncionario(id) {
-    return funcionarios.find((item) => item.id === id)?.nome || "Funcionário";
+    return (
+      funcionarios.find((item) => String(item.id) === String(id))?.nome ||
+      "Funcionário"
+    );
   }
 
   function obterAtividade(id) {
-    const atividade = atividades.find((item) => item.id === id);
+    const atividade = atividades.find((item) => String(item.id) === String(id));
 
     if (!atividade) return "Atividade não identificada";
 
-    const local = locais.find((item) => item.id === atividade.local_id);
+    const local = locais.find(
+      (item) => String(item.id) === String(atividade.local_id),
+    );
 
     return (
       [local?.nome, atividade.descricao].filter(Boolean).join(" — ") ||
@@ -407,14 +426,18 @@ export default function Ocorrencias() {
                           </span>
                         </div>
                       </td>
+
                       <td>{obterAtividade(ocorrencia.atividade_id)}</td>
+
                       <td>{formatarData(ocorrencia.data)}</td>
                       <td>{formatarHora(ocorrencia.horario)}</td>
+
                       <td>
                         <span className="ocorrencias-description">
                           {ocorrencia.descricao}
                         </span>
                       </td>
+
                       <td>
                         <div className="ocorrencias-actions">
                           <button
@@ -425,6 +448,7 @@ export default function Ocorrencias() {
                           >
                             Ver
                           </button>
+
                           <button
                             className="action-button action-delete"
                             title="Excluir ocorrência"
@@ -473,6 +497,7 @@ export default function Ocorrencias() {
                 <span className="ocorrencias-eyebrow">Novo registro</span>
                 <h2>Registrar ocorrência</h2>
               </div>
+
               <button
                 className="modal-close"
                 onClick={() => setModalCadastro(false)}
@@ -495,6 +520,7 @@ export default function Ocorrencias() {
                     required
                   >
                     <option value="">Selecione um funcionário</option>
+
                     {funcionarios
                       .filter((funcionario) => funcionario.ativo)
                       .map((funcionario) => (
@@ -516,12 +542,19 @@ export default function Ocorrencias() {
                     required
                   >
                     <option value="">Selecione uma atividade</option>
+
                     {atividadesDisponiveis.map((atividade) => (
                       <option key={atividade.id} value={atividade.id}>
                         {obterAtividade(atividade.id)}
                       </option>
                     ))}
                   </select>
+                  {funcionarioSelecionado &&
+                    atividadesDisponiveis.length === 0 && (
+                      <small>
+                        Nenhuma atividade encontrada para este funcionário.
+                      </small>
+                    )}
                 </label>
 
                 <label>
@@ -573,6 +606,7 @@ export default function Ocorrencias() {
                 >
                   Cancelar
                 </button>
+
                 <button
                   type="submit"
                   className="ocorrencias-primary-button"
@@ -601,6 +635,7 @@ export default function Ocorrencias() {
                 <span className="ocorrencias-eyebrow">Consulta</span>
                 <h2>Detalhes da ocorrência</h2>
               </div>
+
               <button
                 className="modal-close"
                 onClick={() => setOcorrenciaDetalhe(null)}
@@ -617,24 +652,29 @@ export default function Ocorrencias() {
                   {obterFuncionario(ocorrenciaDetalhe.funcionario_id)}
                 </strong>
               </div>
+
               <div>
                 <span>Atividade</span>
                 <strong>
                   {obterAtividade(ocorrenciaDetalhe.atividade_id)}
                 </strong>
               </div>
+
               <div>
                 <span>Data</span>
                 <strong>{formatarData(ocorrenciaDetalhe.data)}</strong>
               </div>
+
               <div>
                 <span>Horário</span>
                 <strong>{formatarHora(ocorrenciaDetalhe.horario)}</strong>
               </div>
+
               <div className="detail-full">
                 <span>Descrição</span>
                 <p>{ocorrenciaDetalhe.descricao}</p>
               </div>
+
               <div className="detail-full">
                 <span>Registrado em</span>
                 <strong>
@@ -650,6 +690,7 @@ export default function Ocorrencias() {
               >
                 Fechar
               </button>
+
               <button
                 className="ocorrencias-danger-button"
                 onClick={() => setOcorrenciaExcluir(ocorrenciaDetalhe)}
@@ -674,11 +715,13 @@ export default function Ocorrencias() {
             <div className="confirm-symbol">!</div>
             <h2>Excluir ocorrência?</h2>
             <p>Esta ação removerá o registro da lista. Deseja continuar?</p>
+
             {erro && (
               <div className="ocorrencias-error" role="alert">
                 {erro}
               </div>
             )}
+
             <div className="ocorrencias-modal-footer">
               <button
                 className="ocorrencias-secondary-button"
@@ -686,6 +729,7 @@ export default function Ocorrencias() {
               >
                 Cancelar
               </button>
+
               <button
                 className="ocorrencias-danger-button"
                 onClick={excluirOcorrencia}
