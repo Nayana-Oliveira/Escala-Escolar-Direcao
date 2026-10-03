@@ -4,7 +4,16 @@ import { fazerLogin } from "../services/api";
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const [usuario, setUsuario] = useState(null);
+  const [usuario, setUsuario] = useState(() => {
+    try {
+      const usuarioSalvo = localStorage.getItem("usuario");
+      return usuarioSalvo ? JSON.parse(usuarioSalvo) : null;
+    } catch {
+      localStorage.removeItem("usuario");
+      return null;
+    }
+  });
+
   const [carregando, setCarregando] = useState(false);
 
   async function login(email) {
@@ -12,7 +21,10 @@ export function AuthProvider({ children }) {
 
     try {
       const resultado = await fazerLogin(email);
+
       setUsuario(resultado.dados);
+      localStorage.setItem("usuario", JSON.stringify(resultado.dados));
+
       return resultado;
     } finally {
       setCarregando(false);
@@ -21,6 +33,7 @@ export function AuthProvider({ children }) {
 
   function logout() {
     setUsuario(null);
+    localStorage.removeItem("usuario");
   }
 
   return (
