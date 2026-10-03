@@ -1,0 +1,149 @@
+.header {
+  width: 100%;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  position: relative;
+  z-index: 10;
+}
+
+.header-top {
+  min-height: 82px;
+  padding: 12px 36px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  background: #FFFF;
+  color: #333;
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.header-brand img {
+  width: 54px;
+  height: 54px;
+  object-fit: contain;
+  background: #fff;
+  border-radius: 8px;
+  padding: 4px;
+}
+
+.header-brand div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.header-brand strong {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.header-brand span {
+  font-size: 13px;
+  opacity: 0.9;
+}
+
+.header-user {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header-user span {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.logout-button {
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  border-radius: 7px;
+  padding: 9px 16px;
+  background: #b91c1c;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.logout-button:hover {
+  background: #972929;
+  color: #fff;
+}
+
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 36px;
+  min-height: 54px;
+  background: #fff;
+  border-bottom: 1px solid #e5e5e5;
+  overflow-x: auto;
+}
+
+.header-link {
+  display: flex;
+  align-items: center;
+  min-height: 54px;
+  padding: 0 14px;
+  color: #444;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  border-bottom: 3px solid transparent;
+  transition: 0.2s;
+}
+
+.header-link:hover {
+  color: #b91c1c;
+  background: #fff5f5;
+}
+
+.header-link.active {
+  color: #b91c1c;
+  border-bottom-color: #b91c1c;
+}
+
+@media (max-width: 850px) {
+  .header-top {
+    padding: 12px 20px;
+  }
+
+  .header-nav {
+    padding: 0 12px;
+  }
+}
+
+@media (max-width: 600px) {
+  .header-top {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .header-user {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .header-user span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .header-nav {
+    gap: 0;
+  }
+
+  .header-link {
+    padding: 0 12px;
+  }
+}

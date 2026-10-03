@@ -1,0 +1,526 @@
+.locais-page {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  padding: 32px;
+  color: #242424;
+}
+
+.locais-header,
+.locais-list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.locais-eyebrow {
+  color: #a51e28;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.locais-header h1 {
+  margin: 8px 0;
+  font-size: 2rem;
+}
+
+.locais-header p,
+.locais-list-header p {
+  margin: 0;
+  color: #777;
+  font-size: 0.9rem;
+}
+
+.locais-primary-button,
+.locais-danger-button,
+.locais-secondary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.locais-primary-button {
+  background: #a51e28;
+  color: #fff;
+}
+
+.locais-primary-button:hover {
+  background: #861721;
+}
+
+.locais-primary-button:disabled,
+.locais-secondary-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.locais-secondary-button {
+  border: 1px solid #ddd;
+  background: #fff;
+  color: #333;
+}
+
+.locais-secondary-button:hover {
+  background: #f5f5f5;
+}
+
+.locais-danger-button {
+  background: #a51e28;
+  color: #fff;
+}
+
+.locais-danger-button:hover {
+  background: #861721;
+}
+
+.locais-alert {
+  padding: 13px 16px;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  overflow-wrap: anywhere;
+}
+
+.locais-alert-error {
+  border: 1px solid #e8b8bc;
+  background: #fff1f2;
+  color: #8c1721;
+}
+
+.locais-alert-success {
+  border: 1px solid #b9d9c4;
+  background: #f0faf3;
+  color: #23633a;
+}
+
+.locais-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.locais-summary-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-height: 100px;
+  padding: 20px;
+  border: 1px solid #eaeaea;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.locais-summary-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: #f9e9ea;
+  color: #a51e28;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.locais-icon-active {
+  background: #eee;
+  color: #333;
+}
+
+.locais-icon-inactive {
+  background: #f1f1f1;
+  color: #888;
+}
+
+.locais-summary-card div:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.locais-summary-card span {
+  color: #777;
+  font-size: 0.8rem;
+}
+
+.locais-summary-card strong {
+  font-size: 1.5rem;
+}
+
+.locais-list-section {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding: 24px;
+  border: 1px solid #eaeaea;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.locais-list-header h2 {
+  margin: 0 0 6px;
+  font-size: 1.15rem;
+}
+
+.locais-filters {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.locais-search {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  gap: 10px;
+  min-width: 180px;
+  padding: 0 14px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.locais-search span {
+  color: #888;
+  font-size: 1.3rem;
+}
+
+.locais-search input,
+.locais-filters select {
+  width: 100%;
+  min-height: 42px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #333;
+  font: inherit;
+  font-size: 0.85rem;
+}
+
+.locais-filters select {
+  width: auto;
+  min-width: 160px;
+  padding: 0 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.locais-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.local-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 205px;
+  padding: 18px;
+  border: 1px solid #e8e8e8;
+  border-radius: 10px;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.local-card:hover {
+  border-color: #d5a0a4;
+  box-shadow: 0 5px 18px rgb(0 0 0 / 4%);
+}
+
+.local-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.local-card-symbol {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 9px;
+  background: #f9e9ea;
+  color: #a51e28;
+  font-size: 1.25rem;
+}
+
+.local-status {
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.status-active {
+  background: #f1f1f1;
+  color: #333;
+}
+
+.status-inactive {
+  background: #eee;
+  color: #888;
+}
+
+.local-card-content {
+  flex: 1;
+  padding: 16px 0;
+}
+
+.local-card-content h3 {
+  margin: 0 0 8px;
+  font-size: 1rem;
+}
+
+.local-card-content p {
+  margin: 0;
+  color: #777;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.local-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-top: 12px;
+  border-top: 1px solid #eee;
+}
+
+.local-action-button {
+  padding: 6px 8px;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: #444;
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.local-action-button:hover {
+  background: #f3f3f3;
+}
+
+.local-action-delete {
+  color: #a51e28;
+}
+
+.locais-empty {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 160px;
+  color: #777;
+  text-align: center;
+  font-size: 0.875rem;
+}
+
+.locais-empty strong {
+  color: #333;
+}
+
+.locais-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgb(0 0 0 / 45%);
+}
+
+.locais-modal {
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 26px;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 15px 50px rgb(0 0 0 / 15%);
+}
+
+.locais-modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 26px;
+}
+
+.locais-modal-header h2 {
+  margin: 8px 0 0;
+  font-size: 1.3rem;
+}
+
+.locais-modal-close {
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: 7px;
+  background: #f2f2f2;
+  color: #333;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.locais-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.locais-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: #333;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.locais-form input,
+.locais-form textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  outline: none;
+  color: #333;
+  font: inherit;
+  font-size: 0.875rem;
+  resize: vertical;
+}
+
+.locais-form input:focus,
+.locais-form textarea:focus {
+  border-color: #a51e28;
+  box-shadow: 0 0 0 3px rgb(165 30 40 / 9%);
+}
+
+.locais-form small {
+  align-self: flex-end;
+  color: #888;
+  font-size: 0.7rem;
+  font-weight: 400;
+}
+
+.locais-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 26px;
+}
+
+.locais-confirm-modal {
+  max-width: 420px;
+  text-align: center;
+}
+
+.locais-confirm-modal h2 {
+  margin: 14px 0 8px;
+  font-size: 1.25rem;
+}
+
+.locais-confirm-modal p {
+  color: #777;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.locais-confirm-symbol {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  margin: 0 auto;
+  border-radius: 50%;
+  background: #f9e9ea;
+  color: #a51e28;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.locais-confirm-modal .locais-modal-footer {
+  justify-content: center;
+}
+
+@media (max-width: 1100px) {
+  .locais-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .locais-page {
+    padding: 20px;
+  }
+
+  .locais-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .locais-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .locais-filters {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .locais-filters select {
+    width: 100%;
+  }
+
+  .locais-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .locais-list-section {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 420px) {
+  .locais-page {
+    padding: 14px;
+  }
+
+  .locais-modal {
+    padding: 20px;
+  }
+
+  .locais-modal-footer {
+    flex-direction: column-reverse;
+  }
+
+  .locais-modal-footer button {
+    width: 100%;
+  }
+}
