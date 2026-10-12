@@ -1,12 +1,24 @@
 import { useEffect, useState } from "react";
-import {
-  getFuncionarios,
-  cadastrarFuncionario,
-  atualizarFuncionario,
-  excluirFuncionario,
-} from "../../services/api";
+import { getFuncionarios, cadastrarFuncionario, atualizarFuncionario, excluirFuncionario,} from "../../services/api";
 import toast from "react-hot-toast";
 import "./index.css";
+
+const FORM_INICIAL = {
+  nome: "",
+  cpf: "",
+  ativo: true,
+};
+
+function formatarCPF(valor) {
+  const numeros = String(valor || "")
+    .replace(/\D/g, "")
+    .slice(0, 11);
+
+  return numeros
+    .replace(/^(\d{3})(\d)/, "$1.$2")
+    .replace(/^(\d{3})\.(\d{3})(\d)/, "$1.$2.$3")
+    .replace(/\.(\d{3})(\d)/, ".$1-$2");
+}
 
 export default function Funcionarios() {
   const [funcionarios, setFuncionarios] = useState([]);
@@ -19,11 +31,7 @@ export default function Funcionarios() {
 
   const [busca, setBusca] = useState("");
   const [filtroStatus, setFiltroStatus] = useState("todos");
-
-  const [form, setForm] = useState({
-    nome: "",
-    ativo: true,
-  });
+  const [form, setForm] = useState(FORM_INICIAL);
 
   const funcionariosFiltrados = funcionarios.filter((funcionario) => {
     const correspondeNome = (funcionario.nome || "")
@@ -41,7 +49,6 @@ export default function Funcionarios() {
   async function carregarFuncionarios() {
     try {
       setCarregando(true);
-
       const dados = await getFuncionarios();
       setFuncionarios(dados);
     } catch (error) {
@@ -57,23 +64,17 @@ export default function Funcionarios() {
 
   function abrirCadastro() {
     setFuncionarioEditando(null);
-
-    setForm({
-      nome: "",
-      ativo: true,
-    });
-
+    setForm(FORM_INICIAL);
     setModalAberto(true);
   }
 
   function abrirEdicao(funcionario) {
     setFuncionarioEditando(funcionario);
-
     setForm({
       nome: funcionario.nome || "",
-      ativo: funcionario.ativo,
+      cpf: formatarCPF(funcionario.cpf || ""),
+      ativo: Boolean(funcionario.ativo),
     });
-
     setModalAberto(true);
   }
 
@@ -82,11 +83,7 @@ export default function Funcionarios() {
 
     setModalAberto(false);
     setFuncionarioEditando(null);
-
-    setForm({
-      nome: "",
-      ativo: true,
-    });
+    setForm(FORM_INICIAL);
   }
 
   function handleChange(e) {
@@ -94,7 +91,12 @@ export default function Funcionarios() {
 
     setForm((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : value,
+      [name]:
+        type === "checkbox"
+          ? checked
+          : name === "cpf"
+            ? formatarCPF(value)
+            : value,
     }));
   }
 
@@ -102,9 +104,15 @@ export default function Funcionarios() {
     e.preventDefault();
 
     const nome = form.nome.trim();
+    const cpf = form.cpf.replace(/\D/g, "");
 
     if (!nome) {
       toast.error("Informe o nome do funcionário.");
+      return;
+    }
+
+    if (cpf.length !== 11) {
+      toast.error("Informe um CPF com 11 dígitos.");
       return;
     }
 
@@ -115,6 +123,7 @@ export default function Funcionarios() {
 
       const dados = {
         nome,
+        cpf,
         ativo: form.ativo,
       };
 
@@ -134,11 +143,7 @@ export default function Funcionarios() {
 
       setModalAberto(false);
       setFuncionarioEditando(null);
-
-      setForm({
-        nome: "",
-        ativo: true,
-      });
+      setForm(FORM_INICIAL);
 
       await carregarFuncionarios();
     } catch (error) {
@@ -303,9 +308,7 @@ export default function Funcionarios() {
         <div
           className="modal-overlay"
           onMouseDown={(e) => {
-            if (e.target === e.currentTarget) {
-              fecharModal();
-            }
+            if (e.target === e.currentTarget) fecharModal();
           }}
         >
           <div
@@ -335,7 +338,6 @@ export default function Funcionarios() {
             <form onSubmit={handleSave}>
               <div className="form-group">
                 <label htmlFor="nome">Nome do funcionário</label>
-
                 <input
                   id="nome"
                   type="text"
@@ -348,6 +350,26 @@ export default function Funcionarios() {
                 />
               </div>
 
+              <div className="form-group">
+                <label htmlFor="cpf">CPF do funcionário</label>
+                <input
+                  id="cpf"
+                  type="text"
+                  name="cpf"
+                  value={form.cpf}
+                  onChange={handleChange}
+                  placeholder="000.000.000-00"
+                  inputMode="numeric"
+                  autoComplete="off"
+                  maxLength={14}
+                  required
+                />
+                <small>
+                  Os três primeiros dígitos serão usados para gerar o código de
+                  acesso.
+                </small>
+              </div>
+
               <div className="form-checkbox">
                 <input
                   id="ativo"
@@ -356,7 +378,6 @@ export default function Funcionarios() {
                   checked={form.ativo}
                   onChange={handleChange}
                 />
-
                 <label htmlFor="ativo">Funcionário ativo</label>
               </div>
 

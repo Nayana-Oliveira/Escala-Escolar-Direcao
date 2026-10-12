@@ -22,19 +22,20 @@ export default function Header() {
 
   return (
     <header className="header">
-      <div className="header-top">
+      <div className="header-main">
         <div className="header-brand">
-          <img src="/logo.png" alt="Logo da escola" />
-
           <div className="header-brand-info">
-            <strong>Escala Escolar</strong>
-            <span>E. E. Eusébio de Paula Marcondes, Prof.</span>
-            <span>Gestão de inspetores</span>
+            <span className="header-eyebrow">ESCOLA ESTADUAL</span>
+            <h1>Eusébio de Paula Marcondes, Prof.</h1>
+            <p>Sistema de Gestão de Escalas Escolares</p>
           </div>
         </div>
 
-        <div className="header-user">
-          <span>{usuario?.nome || "Usuário"}</span>
+        <div className="header-right">
+          <div className="header-user">
+            <span className="header-user-label">Usuário conectado</span>
+            <strong>{usuario?.nome || "Usuário"}</strong>
+          </div>
 
           <button
             type="button"
@@ -43,6 +44,8 @@ export default function Header() {
           >
             Sair
           </button>
+
+          <img className="header-logo" src="/logo.png" alt="Logo da escola" />
         </div>
       </div>
 
